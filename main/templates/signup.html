@@ -1,9 +1,115 @@
-{% extends 'base.html' %} 
-{% load static %} 
+{% extends 'base.html' %} {% load static %} {% block content %}
 
+<div class="flex justify-center items-center my-5">
+  <div class="bg-gray-900 p-9 shadow rounded">
+    <form
+      action="/signup/"
+      method="post"
+      autocomplete="off"
+      class="grid grid-cols-1 gap-3"
+    >
+      {% csrf_token %} {% if messages %}
+      <ul class="bg-red-900 text-red-300 p-2 rounded">
+        {% for message in messages %}
+        <li>
+          <strong>{{ message.tags }}</strong>
+          <span>{{ message }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
 
-{% block content %}
+      <div class="grid md:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 gap-2">
+          <label>First name</label>
+          <input
+            placeholder="ex: JOHN"
+            type="text"
+            name="fname"
+            class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+          />
+        </div>
 
-<h1> sign up page</h1>
+        <div class="grid grid-cols-1 gap-2">
+          <label>Last name</label>
+          <input
+            placeholder="ex: Doe"
+            type="text"
+            name="lname"
+            class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-2">
+        <label>Email</label>
+        <input
+          placeholder="ex: me@domain.com"
+          type="text"
+          name="email"
+          class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+        />
+      </div>
+
+      <div class="grid grid-cols-1 gap-2">
+        <label>Username</label>
+        <input
+          placeholder="ex: leirbag"
+          type="text"
+          name="username"
+          class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+        />
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 gap-2">
+          <label>Password</label>
+          <input
+            placeholder="strong password"
+            type="password"
+            name="password"
+            class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 gap-2">
+          <label>Confirm Password</label>
+          <input
+            placeholder="retype password"
+            type="password"
+            name="password_confirm"
+            class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-2">
+        <span>
+          <input type="checkbox" id="terms" />
+          <label for="terms"
+            >I confirm this information is real and correct</label
+          >
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 gap-2">
+        <button
+          type="submit"
+          class="py-1 bg-orange-700 hover:bg-orange-600 font-semibold rounded text-white"
+        >
+          CREATE ACCOUNT
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-2 text-end">
+        <span>
+          Already have account
+          <a href="/signin/" class="text-orange-400 underline">login</a>
+          here
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
 
 {% endblock %}
