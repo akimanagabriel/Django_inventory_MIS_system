@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <script src="{% static 'tailwindcss.js' %}"></script>
+  </head>
+  <body class="bg-slate-800 text-gray-400">
+    <div class="grid grid-cols-1 md:grid-cols-10">
+      <div class="col-span-2 min-h-screen bg-slate-900 ">{% include 'dashboard/leftbar.html' %}</div>
+
+      <div class="col-span-8 min-h-screen bg-slate-800">
+        <header>{% include 'dashboard/header.html' %}</header>
+        <main class="px-6 my-5">{% block content %} {% endblock %}</main>
+      </div>
+    </div>
+  </body>
+</html>

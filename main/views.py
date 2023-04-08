@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,logout,login
 
 from .validation import *
 
@@ -29,6 +30,9 @@ def signup(request):
 
         if not is_valid_email(request.POST['email']):
             errors.append("Invalid email address")
+            
+        if User.objects.filter(email=request.POST['email']):
+            errors.append("Email address already exist")
 
         if char_length(request.POST['username']):
             errors.append("Username must have atleast 3 characters long")
@@ -57,4 +61,22 @@ def signup(request):
 
 
 def signin(request):
-    return render(request, 'signin.html')
+    if request.method == 'GET':
+        return render(request, 'signin.html')
+    else:
+        user = authenticate(
+            request, username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
+            login(request,user)
+            request.session['userEmail'] = user.email
+            request.session['userId'] = user.id
+            return redirect('/dashboard/')
+        else:
+            messages.error(request, "Invalid credentials, please try again!")
+            return redirect('/signin/')
+
+
+def signout(request):
+    messages.success(request,"You have been logged out")
+    logout(request)
+    return redirect('/signin/')

@@ -9,7 +9,9 @@
       class="grid grid-cols-1 gap-3"
     >
       {% csrf_token %} {% if messages %} {% for message in messages %}
-      <div class="flex gap-2 bg-green-900 text-green-500 px-2 py-1 rounded">
+      <div
+        class="flex gap-2 {% if message.tags == 'success' %} bg-green-900 text-green-500 {% else %} bg-red-900 text-red-500 {% endif %} px-2 py-1 rounded"
+      >
         <strong>{{ message.tags }}</strong>
         <span>{{ message }}</span>
       </div>
