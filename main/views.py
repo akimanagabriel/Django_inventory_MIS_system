@@ -70,6 +70,7 @@ def signin(request):
             login(request,user)
             request.session['userEmail'] = user.email
             request.session['userId'] = user.id
+            request.session['username'] = user.username
             return redirect('/dashboard/')
         else:
             messages.error(request, "Invalid credentials, please try again!")
