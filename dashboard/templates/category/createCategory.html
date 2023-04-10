@@ -1,0 +1,39 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+  stock
+{% endblock %}
+
+{% block content %}
+  <div>
+    <header class="flex justify-between">
+      <div>
+        <strong>DASHBOARD</strong>
+        <i class="fa fa-caret-right" aria-hidden="true"></i>
+        CREATE CATEGORY
+      </div>
+    </header>
+  </div>
+
+  <div class="my-5">
+    {% include "messages.html" %}
+    <form action="/dashboard/category/create/" method="post">
+      {% csrf_token %}
+      <div class="grid grid-cols-1 gap-2">
+        <div>
+          <label>Category name</label>
+          <input placeholder="ex: Electronic" type="text" name="title" class="px-4 py-1 rounded bg-slate-700 border border-slate-600" />
+        </div>
+  
+        <div>
+          <input type="checkbox" name="isExpirable" id="isExpirable"/>
+          <label for="isExpirable">This category contains products which can be expired</label>
+        </div>
+
+        <div>
+          <button type="submit" class="px-4 py-1 rounded bg-orange-600 hover:bg-orange-700 text-white">Create category</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

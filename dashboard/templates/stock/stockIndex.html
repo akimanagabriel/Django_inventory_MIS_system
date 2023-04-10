@@ -1,0 +1,20 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+  stock
+{% endblock %}
+
+{% block content %}
+  <div>
+    <header class="flex justify-between">
+      <div>
+        <strong>DASHBOARD</strong>
+        <i class="fa fa-caret-right" aria-hidden="true"></i>
+        STOCK
+      </div>
+      <div>
+        <a href="/dashboard/stock/create/"><button class="px-4 py-1 rounded bg-orange-600 text-orange-100 hover:bg-orange-700">New Product</button></a>
+      </div>
+    </header>
+  </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+  stock
+{% endblock %}
+
+{% block content %}
+  <div>
+    <header class="flex justify-between">
+      <div>
+        <strong>DASHBOARD</strong>
+        <i class="fa fa-caret-right" aria-hidden="true"></i>
+        STOCK/CREATE
+      </div>
+      <div>
+        <a href="/dashboard/stock/create/"><button class="px-4 py-1 rounded bg-orange-600 text-orange-100 hover:bg-orange-700">New Product</button></a>
+      </div>
+    </header>
+  </div>
+  <div>
+    <h1>Form</h1>
+    <div class="grid grid-cols-1 gap-2">
+        <label>Product</label>
+        <input
+          placeholder="ex: Laptop"
+          type="text"
+          name="produ"
+          class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+        />
+      </div>
+  </div>
+{% endblock %}

@@ -12,9 +12,9 @@ class Category(models.Model):
 class Incoming(models.Model):
     price = models.IntegerField()
     name = models.CharField(max_length=50)
-    inDate = models.DateField(default=date.today)
     quantity = models.IntegerField()
     expirationDate = models.DateField(null=True)
+    inDate = models.DateField(default=date.today)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
