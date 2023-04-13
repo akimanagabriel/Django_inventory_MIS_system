@@ -1,77 +1,132 @@
 {% extends 'dashboard/base.html' %}
 {% load humanize %}
 
+{% block title %}
+  Stock - {{ product.name }}
+{% endblock %}
+
 {% block content %}
-  <div class="container">
-    {% comment %} product details {% endcomment %}
+  <div class="">
+    {% comment %}product details{% endcomment %}
     <div class="bg-slate-900 p-5 rounded">
-        <div class="flex justify-between">
-            <h1 class="uppercase font-semibold text-xl text-orange-500 text-center">
-                {{ product.name }} <span class="text-gray-500"> from</span> {{product.category.title}}<span class="text-gray-500"> category</span>
-            </h1>
-            <div class="gap-2 flex flex-row-reverse">
-                <button onclick="confirmDelete({{ product.id }})" class="px-5 py-1 rounded bg-orange-800 hover:bg-orange-700">Remove</button>
-                {% comment %} <a href="{% url 'product.destroy' product.id %}"> delete</a> {% endcomment %}
-                <button class="px-5 py-1 rounded bg-blue-800 hover:bg-blue-700">Edit</button>
-            </div>
+      <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+        <h1 class="uppercase font-semibold text-xl text-orange-500 text-center">{{ product.name }} <span class="text-gray-500">from</span> {{ product.category.title }}<span class="text-gray-500">category</span></h1>
+        <div class="gap-3 flex">
+          <button onclick="confirmDelete({{ product.id }})" class="px-5 py-1 rounded bg-orange-800 hover:bg-orange-700">Remove</button>
+          <button onclick="showEditForm()" class="px-5 py-1 rounded bg-blue-800 hover:bg-blue-700">Edit</button>
         </div>
-    
-        <div class="grid grid-cols-12">
-            <div class="col-span-4">
-                <h1 class="underline my-3">Product Details</h1>
-                <table class="w-full">
-                    <tr>
-                        <td class="font-semibold">Name</td>
-                        <td class="capitalize">{{product.name}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Price</td>
-                        <td class="capitalize">{{product.price|intcomma}} RWF</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Quantity</td>
-                        <td class="capitalize">{{product.quantity|intcomma}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Registration date</td>
-                        <td class="capitalize">{{product.inDate}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Category</td>
-                        <td class="capitalize">{{product.category.title}}</td>
-                    </tr>
-                    
-                    {% if product.category.isExpirable %}
-                    <tr>
-                        <td class="font-semibold">Expiration date</td>
-                        <td class="capitalize">{{product.expirationDate}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Time Left</td>
-                        <td class="capitalize">{{product.expirationDate|timeuntil}}</td>
-                    </tr>
-                    {% endif %}
-                        
-                </table>
-            </div>
+      </div>
+
+      <div class="grid grid-cols-12 space-y-3 place-items-stretch gap-5">
+        <div class="col-span-12 lg:col-span-4 gap-5">
+          <h1 class="underline my-3">Product Details</h1>
+          <table class="w-full">
+            <tr>
+              <td class="font-semibold">Name</td>
+              <td class="capitalize">{{ product.name }}</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Price</td>
+              <td class="capitalize">{{ product.price|intcomma }} RWF</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Quantity</td>
+              <td class="capitalize">{{ product.quantity|intcomma }}</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Registration date</td>
+              <td class="capitalize">{{ product.inDate }}</td>
+            </tr>
+            <tr>
+              <td class="font-semibold">Category</td>
+              <td class="capitalize">{{ product.category.title }}</td>
+            </tr>
+
+            {% if product.category.isExpirable %}
+              <tr>
+                <td class="font-semibold">Expiration date</td>
+                <td class="capitalize">{{ product.expirationDate }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Time Left</td>
+                <td class="capitalize">{{ product.expirationDate|timeuntil }}</td>
+              </tr>
+            {% endif %}
+          </table>
         </div>
-    
+
+        <div class="col-span-12 lg:col-span-8">
+
+            {% if messages %}
+            <div class="my-3 col-span-2">
+                {% include 'messages.html' %}
+            </div>
+            {% endif %}
+
+          <form id="editForm" action="{% url 'product.update' product.id %}" method="post" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% csrf_token %}
+            
+            <div class="flex flex-col">
+              <label for="name">Product name</label>
+              <input type="text" name="name" value="{{ product.name }}" class="px-4 py-1 rounded bg-slate-700 border border-slate-600 capitalize" />
+            </div>
+
+            <div class="flex flex-col">
+              <label for="price">Price</label>
+              <input type="number" name="price" value="{{ product.price }}" class="px-4 py-1 rounded bg-slate-700 border border-slate-600 capitalize" />
+            </div>
+
+            <div class="flex flex-col">
+              <label for="quantity">quantity</label>
+              <input type="number" name="quantity" value="{{ product.quantity }}" class="px-4 py-1 rounded bg-slate-700 border border-slate-600 capitalize" />
+            </div>
+
+            <div class="flex flex-col">
+              <label for="category">Category</label>
+              <select size="1" name="category" id="" class="px-4 py-1 rounded bg-slate-700 border border-slate-600 capitalize">
+                {% for  category in categories  %}
+                    <option value="{{ category.id }}" {% if product.category.id == category.id %} selected {% endif %}>
+                        {{ category.title }}
+                    </option>
+                {% endfor %}
+                
+              </select>
+            </div>
+
+
+            <div class="flex flex-col col-span-2">
+              <button type="submit" class="bg-orange-800 py-1 rounded hover:bg-orange-700">Save changes</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
     </div>
 
-    {% comment %} related products {% endcomment %}
+    {% comment %}related products{% endcomment %}
     <div class="my-5">
       <h1 class="text-xl uppercase mb-3 text-orange-500">Related products</h1>
-      {% include 'product/index.html' %}
+
+      {% if products %}
+        {% include 'product/index.html' %}
+      {% else %}
+        <div class="bg-gray-900 py-2 px-5 rounded shadow">OOOPS! No other related product available</div>
+      {% endif %}
     </div>
   </div>
+
   <script>
-    function confirmDelete(id){
-        var result = confirm("Are you sure to delete this product?")
-        if (result){
-            const url = `/dashboard/product/${id}/destroy`
-            window.location = url
-        }
+    function confirmDelete(id) {
+      var result = confirm('Are you sure to delete this product?')
+      if (result) {
+        const url = `/dashboard/product/${id}/destroy`
+        window.location = url
+      }
+    }
+
+    const showEditForm = e =>{
+        const form = document.querySelector("#editForm")
+        form.classList.toggle("hidden")
     }
   </script>
-
 {% endblock %}

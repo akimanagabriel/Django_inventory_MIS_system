@@ -72,6 +72,7 @@ def show(request, id):
     return render(request,'product/show.html',{
         "product": product,
         "products":Incoming.objects.filter(Q(category=product.category) & ~Q(id=id)).order_by('name'),
+        "categories":Category.objects.filter(Q(isExpirable=product.category.isExpirable))
         }
     )
 
@@ -83,7 +84,18 @@ def edit(request, id):
 
 @login_required
 def update(request, id):
-    return HttpResponse('product update')
+    product = get_object_or_404(Incoming,id=id)
+    category_id = int(request.POST.get('category'))
+    category = Category.objects.filter(id=category_id)[0]
+    product.name = request.POST.get('name')
+    product.price = request.POST.get('price')
+    product.quantity = request.POST.get('quantity')
+    product.category = category
+    product.save()
+    
+    route = f"/dashboard/product/{id}/show"
+    messages.success(request, "Product updated")
+    return redirect(route)
 
 
 @login_required
