@@ -5,6 +5,7 @@ from main.models import Category, Incoming
 from django.contrib import messages
 from datetime import datetime
 from main.validation import *
+from django.db.models import Q
 
 
 @login_required
@@ -26,13 +27,14 @@ def store(request):
     expirationDate = request.POST.get('expiratioDate')
 
     # validate dates
-    expiration = datetime.strptime(expirationDate, '%Y-%m-%d').date()
-    now = datetime.now().date()
-    days_left = expiration-now
+    if expirationDate:
+        expiration = datetime.strptime(expirationDate, '%Y-%m-%d').date()
+        now = datetime.now().date()
+        days_left = expiration-now
 
-    if days_left.days < 1:
-        messages.error(request, "Denied, Your product already expired!")
-        return redirect('/dashboard/stock/')
+        if days_left.days < 1:
+            messages.error(request, "Denied, Your product already expired!")
+            return redirect('/dashboard/stock/')
 
     if productPrice < 5:
         messages.error(request, "product price must start atleast 5RWF")
@@ -69,8 +71,7 @@ def show(request, id):
     product = get_object_or_404(Incoming, id=id)
     return render(request,'product/show.html',{
         "product": product,
-        "products":Incoming.objects.filter(category=product.category),
-        # "category": get_object_or_404(Category,id=product.category.id)
+        "products":Incoming.objects.filter(Q(category=product.category) & ~Q(id=id)).order_by('name'),
         }
     )
 
