@@ -93,7 +93,7 @@ def createProduct(request):
 
 @login_required
 def checkExpirableCategory(request):
-    id = int(request.POST.get('category'))
+    id = int(request.GET.get('category'))
     category = Category.objects.filter(id=id)[0]
     categories = Category.objects.all().order_by('title')
     return render(request, 'stock/createProduct.html', {'category': category, 'categories': categories, 'form': 2})
