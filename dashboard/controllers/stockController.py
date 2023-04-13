@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from main.models import Category
@@ -8,11 +9,6 @@ from django.contrib import messages
 @login_required
 def index(request):
     return render(request, 'stock/stockIndex.html')
-
-
-@login_required
-def createProduct(request):
-    return render(request, 'stock/createProduct.html')
 
 
 @login_required
@@ -31,16 +27,23 @@ def createCategory(request):
     # receive  data from form
     title = str(request.POST.get('title'))
     expireble = bool(request.POST.get('isExpirable'))
-    
+
+    # check if exist
+    category = Category.objects.filter(title=title)
+    if (category):
+        messages.error(request, "Category already exist")
+        route = f"/dashboard/category/create/"
+        return redirect(route)
+
     if char_length(title):
-        messages.error(request,"Category title must be atleast 3 characters long")
+        messages.error(
+            request, "Category title must be atleast 3 characters long")
         route = f"/dashboard/category/create/"
         return redirect(route)
     if not is_letters_only(title):
-        messages.error(request,'category title must contain characters only')
+        messages.error(request, 'category title must contain characters only')
         route = f"/dashboard/category/create/"
         return redirect(route)
-    
 
     # insert into db
     category = Category(title=title, isExpirable=expireble)
@@ -61,21 +64,36 @@ def editCategory(request, id):
     context = {'category': Category.objects.filter(id=id)[0]}
     return render(request, 'category/editcategory.html', context)
 
+
 @login_required
 def updateCategory(request, id):
     if char_length(request.POST.get('title')):
-        messages.error(request,"Category title must be atleast 3 characters long")
+        messages.error(
+            request, "Category title must be atleast 3 characters long")
         route = f"/dashboard/categories/{id}/edit"
         return redirect(route)
     if not is_letters_only(request.POST.get('title')):
-        messages.error(request,'category title must contain characters only')
+        messages.error(request, 'category title must contain characters only')
         route = f"/dashboard/categories/{id}/edit"
         return redirect(route)
-    
+
     category = Category.objects.filter(id=id)[0]
     category.title = str(request.POST['title'])
     category.isExpirable = bool(request.POST.get('isExpirable'))
     category.save()
     messages.success(request, "changes saved successfully!")
     return redirect('/dashboard/categories/')
-    
+
+
+@login_required
+def createProduct(request):
+    categories = Category.objects.all().order_by('title')
+    return render(request, 'stock/createProduct.html', {'categories': categories, 'form': 1})
+
+
+@login_required
+def checkExpirableCategory(request):
+    id = int(request.POST.get('category'))
+    category = Category.objects.filter(id=id)[0]
+    categories = Category.objects.all().order_by('title')
+    return render(request, 'stock/createProduct.html', {'category': category, 'categories': categories, 'form': 2})

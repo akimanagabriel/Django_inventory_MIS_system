@@ -1,32 +1,96 @@
-{% extends 'dashboard/base.html' %}
-
-{% block title %}
-  stock
-{% endblock %}
-
+{% extends 'dashboard/base.html' %} {% block title %} stock {% endblock %} 
 {% block content %}
-  <div>
-    <header class="flex justify-between">
-      <div>
-        <strong>DASHBOARD</strong>
-        <i class="fa fa-caret-right" aria-hidden="true"></i>
-        STOCK/CREATE
+<div>
+  <header class="flex justify-between">
+    <div>
+      <strong>DASHBOARD</strong>
+      <i class="fa fa-caret-right" aria-hidden="true"></i>
+      STOCK/CREATE
+    </div>
+  </header>
+</div>
+
+<div>
+  <div class="my-6 grid grid-cols-1 md:grid-cols-12 gap-5">
+    <form action="{% url 'checkexpire' %}" method="post" class="md:col-span-5">
+      {% csrf_token %}
+      <label class="block mb-2">Choose category of your product</label>
+      <select
+        placeholder="ex: Laptop"
+        type="text"
+        name="category"
+        class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+      >
+        {% for category in categories %}
+        <option value="{{ category.id }}" class="capitalize">
+          {{ category.title }}
+        </option>
+        {% endfor %}
+      </select>
+      <button
+        class="px-4 py-1 rounded bg-orange-700 hover:bg-orange-800 text-white"
+      >
+        Next
+      </button>
+    </form>
+    {% if form == 2 %} {% comment %} return second form {% endcomment %}
+    <form action="" method="post" class="md:col-span-7">
+      <div class="bg-slate-900 p-5 rounded shadow space-y-3">
+        <p>
+          Create a product which belongd in
+          <b class="capitalize text-orange-400">{{category.title}}</b> category
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex flex-col">
+            <label>Product title</label>
+            <input
+              type="text"
+              name="productTitle"
+              class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+            />
+          </div>
+
+          <div class="flex flex-col">
+            <label>Price</label>
+            <input
+              type="number"
+              name="price"
+              class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col">
+          <label>Quantity</label>
+          <input
+            type="number"
+            name="quantity"
+            class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+          />
+        </div>
+
+        {% if category.isExpirable %}
+        <div class="flex flex-col">
+          <label>Expiration date</label>
+          <input
+            type="date"
+            name="quantity"
+            class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+          />
+        </div>
+        {% endif %}
+
+        <div class="flex flex-col">
+          <button
+            class="px-5 py-1 rounded text-white bg-orange-700 hover:bg-orange-800 mt-3"
+          >
+            Finish
+          </button>
+        </div>
       </div>
-      <div>
-        <a href="/dashboard/stock/create/"><button class="px-4 py-1 rounded bg-orange-600 text-orange-100 hover:bg-orange-700">New Product</button></a>
-      </div>
-    </header>
+    </form>
+    {% endif %}
   </div>
-  <div>
-    <h1>Form</h1>
-    <div class="grid grid-cols-1 gap-2">
-        <label>Product</label>
-        <input
-          placeholder="ex: Laptop"
-          type="text"
-          name="produ"
-          class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
-        />
-      </div>
-  </div>
+</div>
 {% endblock %}
