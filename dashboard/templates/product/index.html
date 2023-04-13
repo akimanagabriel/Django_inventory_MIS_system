@@ -1,4 +1,6 @@
+{% load humanize %}
 <div class="grid grid-cols-12 gap-3">
+        
   {% for product in products %}
     <a href="{% url 'product.show' product.id %}" class="col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-4 xl:col-span-3">
         <div class=" flex justify-between bg-slate-900 p-5 rounded hover:border border-slate-700">
@@ -13,11 +15,22 @@
                     </div>
                     <h1 class=" font-semibold capitalize">{{ product.name }}  </h1>
                 </div>
-                <p class="mt-2"><span class="text-orange-400 text-2xl font-bold">{{ product.price }}</span>RWF</p>
+                <p class="mt-2"><span class="text-orange-400 text-2xl font-bold">{{ product.price|intcomma }}</span>RWF</p>
+                
             </div>
 
-            <div>
+            <div class="text-right">
+                
+                {% if product.expirationDate %}
+                
+                <p class="italicf">
+                    <span class="block font-semibold uppercase text-orange-400">Expired in</span>
+                    <span class="text-gray-500">{{ product.expirationDate|timeuntil }}</span>
+                </p>
+                {% else %}
                 <i class="fa fa-briefcase text-5xl text-gray-800" aria-hidden="true"></i>
+                {% endif %}
+                    
             </div>
         </div>
     </a>

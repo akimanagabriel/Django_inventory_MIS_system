@@ -39,7 +39,8 @@
       <div class="bg-slate-900 p-5 rounded shadow space-y-3">
         <p>
           Create a product which belongd in
-          <b class="capitalize text-orange-400">{{category.title}}</b> category
+          <b class="capitalize text-orange-400">{{category.title}}</b> 
+          category
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -49,7 +50,10 @@
               type="text"
               name="productTitle"
               class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+              id="titleInput"
+              required
             />
+            <span id="titleError"></span>
           </div>
 
           
@@ -65,7 +69,10 @@
               type="number"
               name="price"
               class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
-            />
+              id="priceInput"
+              required
+              >
+            <span id="priceError"></span>
           </div>
         </div>
 
@@ -75,7 +82,10 @@
             type="number"
             name="quantity"
             class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+            id="quantityInput"
+            required
           />
+          <span id="quantityError"></span>
         </div>
 
         {% if category.isExpirable %}
@@ -85,7 +95,10 @@
             type="date"
             name="expiratioDate"
             class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
+            id="dateInput"
+            required
           />
+          <span id="dateError"></span>
         </div>
         {% endif %}
 

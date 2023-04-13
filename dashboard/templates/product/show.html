@@ -1,0 +1,77 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+
+{% block content %}
+  <div class="container">
+    {% comment %} product details {% endcomment %}
+    <div class="bg-slate-900 p-5 rounded">
+        <div class="flex justify-between">
+            <h1 class="uppercase font-semibold text-xl text-orange-500 text-center">
+                {{ product.name }} <span class="text-gray-500"> from</span> {{product.category.title}}<span class="text-gray-500"> category</span>
+            </h1>
+            <div class="gap-2 flex flex-row-reverse">
+                <button onclick="confirmDelete({{ product.id }})" class="px-5 py-1 rounded bg-orange-800 hover:bg-orange-700">Remove</button>
+                {% comment %} <a href="{% url 'product.destroy' product.id %}"> delete</a> {% endcomment %}
+                <button class="px-5 py-1 rounded bg-blue-800 hover:bg-blue-700">Edit</button>
+            </div>
+        </div>
+    
+        <div class="grid grid-cols-12">
+            <div class="col-span-4">
+                <h1 class="underline my-3">Product Details</h1>
+                <table class="w-full">
+                    <tr>
+                        <td class="font-semibold">Name</td>
+                        <td class="capitalize">{{product.name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Price</td>
+                        <td class="capitalize">{{product.price|intcomma}} RWF</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Quantity</td>
+                        <td class="capitalize">{{product.quantity|intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Registration date</td>
+                        <td class="capitalize">{{product.inDate}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Category</td>
+                        <td class="capitalize">{{product.category.title}}</td>
+                    </tr>
+                    
+                    {% if product.category.isExpirable %}
+                    <tr>
+                        <td class="font-semibold">Expiration date</td>
+                        <td class="capitalize">{{product.expirationDate}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Time Left</td>
+                        <td class="capitalize">{{product.expirationDate|timeuntil}}</td>
+                    </tr>
+                    {% endif %}
+                        
+                </table>
+            </div>
+        </div>
+    
+    </div>
+
+    {% comment %} related products {% endcomment %}
+    <div class="my-5">
+      <h1 class="text-xl uppercase mb-3 text-orange-500">Related products</h1>
+      {% include 'product/index.html' %}
+    </div>
+  </div>
+  <script>
+    function confirmDelete(id){
+        var result = confirm("Are you sure to delete this product?")
+        if (result){
+            const url = `/dashboard/product/${id}/destroy`
+            window.location = url
+        }
+    }
+  </script>
+
+{% endblock %}
