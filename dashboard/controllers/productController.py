@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from main.models import Incoming
-
+from main.models import Category, Incoming
+from django.contrib import messages
 
 
 @login_required
@@ -17,7 +17,22 @@ def create(request):
 
 @login_required
 def store(request):
-    return HttpResponse('product store')
+    productName = request.POST.get('productTitle')
+    categoryId = request.POST.get('categoryId')
+    productPrice = request.POST.get('price')
+    productQuantity = request.POST.get('quantity')
+    expirationDate = request.POST.get('expiratioDate')
+
+    product = Incoming(
+        price=productPrice,
+        name=productName,
+        quantity=productQuantity,
+        expirationDate=expirationDate,
+        category=Category.objects.filter(id=categoryId)[0]
+    )
+    product.save()
+    messages.success(request,"Product created")
+    return redirect('/dashboard/stock/')
 
 
 @login_required

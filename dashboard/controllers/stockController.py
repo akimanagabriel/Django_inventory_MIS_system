@@ -1,14 +1,15 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from main.models import Category
+from main.models import Category, Incoming
 from main.validation import *
 from django.contrib import messages
 
 
 @login_required
 def index(request):
-    return render(request, 'stock/stockIndex.html')
+    products = Incoming.objects.all().values()
+    return render(request, 'stock/stockIndex.html', {'products': products})
 
 
 @login_required

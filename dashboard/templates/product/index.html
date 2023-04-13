@@ -1,0 +1,25 @@
+<div class="grid grid-cols-12 gap-3">
+  {% for product in products %}
+    <a href="{% url 'product.show' product.id %}" class="col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-4 xl:col-span-3">
+        <div class=" flex justify-between bg-slate-900 p-5 rounded hover:border border-slate-700">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="h-[25px] w-[25px] bg-orange-800 p-1 text-white rounded-full flex justify-center items-center text-sm">
+                        {% if product.quantity > 9 %}
+                            9+
+                        {%else%}
+                            {{ product.quantity }}
+                        {% endif %}
+                    </div>
+                    <h1 class=" font-semibold capitalize">{{ product.name }}  </h1>
+                </div>
+                <p class="mt-2"><span class="text-orange-400 text-2xl font-bold">{{ product.price }}</span>RWF</p>
+            </div>
+
+            <div>
+                <i class="fa fa-briefcase text-5xl text-gray-800" aria-hidden="true"></i>
+            </div>
+        </div>
+    </a>
+  {% endfor %}
+</div>
