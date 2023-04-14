@@ -22,4 +22,5 @@ urlpatterns = [
     path('product/<int:id>/edit', productController.edit, name='product.edit'),
     path('product/<int:id>/update', productController.update, name='product.update'),
     path('product/<int:id>/destroy', productController.destroy, name='product.destroy'),
+    path('product/<int:id>/export', productController.export, name='product.export'),
 ]

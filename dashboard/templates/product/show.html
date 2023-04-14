@@ -11,11 +11,39 @@
     <div class="bg-slate-900 p-5 rounded">
       <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
         <h1 class="uppercase font-semibold text-xl text-orange-500 text-center">{{ product.name }} <span class="text-gray-500">from</span> {{ product.category.title }}<span class="text-gray-500">category</span></h1>
-        <div class="gap-3 flex">
-          <button onclick="confirmDelete({{ product.id }})" class="px-5 py-1 rounded bg-orange-800 hover:bg-orange-700">Remove</button>
-          <button onclick="showEditForm()" class="px-5 py-1 rounded bg-blue-800 hover:bg-blue-700">Edit</button>
+        <div class="gap-3 flex relative">
+          <button onclick="showExport()" class="px-5 py-1 rounded bg-gray-700 hover:bg-gray-600">
+            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+            Export
+          </button>
+          
+          {% comment %} export form {% endcomment %}
+          <div id="exportForm" class="hidden absolute bg-slate-800 top-9 px-5 py-2 rounded shadow-xl left-0">
+            <form action="{% url 'product.export' product.id %}" method="post">
+              {% csrf_token %}
+              <div class="flex flex-col">
+                <label for="quantity" class="text-sm">Type the quantity you want to export <br><b>Note</b> maximum quantity is <b>{{product.quantity}}</b></label>
+                <input type="number" name="quantity" placeholder="Maximum = {{ product.quantity }}" class="px-4 py-1 rounded bg-slate-700 border border-slate-600 capitalize" />
+              </div>
+              <div class="flex flex-col my-3">
+                <button 
+                onclick="comfirmExport({{ product.id }})" 
+                class="px-5 py-1 rounded bg-slate-900 hover:bg-slate-700">Confirm Export</button>
+              </div>
+            </form>
+          </div>
+          
+          <button onclick="showEditForm()" class="px-5 py-1 rounded bg-gray-700 hover:bg-gray-600">
+            <i class="fa fa-edit" aria-hidden="true"></i>
+            Edit
+          </button>
+          <button onclick="confirmDelete({{ product.id }})" class="px-5 py-1 rounded bg-orange-800 hover:bg-orange-700">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            Remove
+          </button>
         </div>
       </div>
+
 
       <div class="grid grid-cols-12 space-y-3 place-items-stretch gap-5">
         <div class="col-span-12 lg:col-span-4 gap-5">
@@ -127,6 +155,10 @@
     const showEditForm = e =>{
         const form = document.querySelector("#editForm")
         form.classList.toggle("hidden")
+    }
+
+    const showExport = e=>{
+      document.querySelector("#exportForm").classList.toggle("hidden")
     }
   </script>
 {% endblock %}

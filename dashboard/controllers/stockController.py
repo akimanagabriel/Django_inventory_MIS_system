@@ -3,12 +3,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from main.models import Category, Incoming
 from main.validation import *
+from django.db.models import Q
 from django.contrib import messages
 
 
 @login_required
 def index(request):
-    products = Incoming.objects.all().values()
+    products = Incoming.objects.all()
     return render(request, 'stock/stockIndex.html', {'products': products})
 
 
