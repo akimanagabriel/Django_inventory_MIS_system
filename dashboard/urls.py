@@ -3,6 +3,7 @@ from dashboard import views
 from dashboard.controllers import stockController
 from dashboard.controllers import productController
 from dashboard.controllers import outgoingController
+from dashboard.controllers import expiredController
 
 urlpatterns = [
     path('', views.home),
@@ -25,8 +26,12 @@ urlpatterns = [
     path('product/<int:id>/destroy', productController.destroy, name='product.destroy'),
     path('product/<int:id>/export', productController.export, name='product.export'),
     
-    #outgoing routes
-    path('outgoing/',outgoingController.index)
+    # outgoing routes
+    path('outgoing/',outgoingController.index),
+    path('outgoing/<int:id>',outgoingController.destroy , name='outgoing.destroy'),
     
-    
+    # expired routes
+    path('expired/',expiredController.index, name='expired.index'),
+    path('expired/<int:id>',expiredController.destroy , name='expired.destroy'),
+        
 ]

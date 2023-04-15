@@ -25,4 +25,4 @@ class Outgoing(models.Model):
 
 class Expired(models.Model):
     product = models.ForeignKey(Incoming, on_delete=models.CASCADE)
-    expirationDate = models.DateField(null=True)
+    quantity = models.IntegerField(default=0)

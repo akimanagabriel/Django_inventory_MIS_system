@@ -14,6 +14,10 @@
     </div>
   </header>
 
+  <div class="my-3">
+    {% include "messages.html" %}
+  </div>
+
   <div class="my-5">
     {% if not outgoings %}
       <div class="bg-gray-700 rounded p-2">No outgoing products available</div>
@@ -22,14 +26,14 @@
         <table class="w-full">
           <thead>
             <tr>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">#</th>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Date out</th>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product name</th>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product Category</th>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product quantity</th>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product price</th>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Date in</th>
-              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Expiration date</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">NO</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Date out</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product name</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product Category</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product quantity</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product price</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Date in</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -37,14 +41,24 @@
               <tr>
                 <td class="text-start border border-gray-700 px-2">{{ forloop.counter }}</td>
                 <td class="text-start border border-gray-700 px-2">{{ outgoing.outDate }}</td>
-                <td class="text-start border border-gray-700 px-2">
-                  {{ outgoing.product.name }}
-                </td>
+                <td class="text-start border border-gray-700 px-2"><span class="capitalize">
+                  
+                  {% if "exported#" in outgoing.product.name %}
+                    {{ outgoing.product.name|slice:"9:" }}
+                  {% else %}
+                    {{ outgoing.product.name }}
+                  {% endif %}
+                    
+                </span></td>
                 <td class="text-start border border-gray-700 px-2">{{ outgoing.product.category.title }}</td>
                 <td class="text-start border border-gray-700 px-2">{{ outgoing.quantity }}</td>
                 <td class="text-start border border-gray-700 px-2">{{ outgoing.product.price|intcomma }} RWF</td>
                 <td class="text-start border border-gray-700 px-2">{{ outgoing.product.inDate }}</td>
-                <td class="text-start border border-gray-700 px-2">{{ outgoing.product.expirationDate }}</td>
+                <td class="text-start border border-gray-700 px-2">
+                  <a href="javascript:confirmDelete({{ outgoing.id }})" class="flex justify-center">
+                    <i class="fa fa-trash-o text-red-400" aria-hidden="true"></i>
+                  </a>
+                </td>
               </tr>
             {% endfor %}
           </tbody>
@@ -52,4 +66,12 @@
       </div>
     {% endif %}
   </div>
+  <script>
+    //outgoing/<int:id>
+      const confirmDelete= id =>{
+        if(confirm("Are you sure to delete this record?")){
+          window.location = `/dashboard/outgoing/${id}`
+        }
+      }
+  </script>
 {% endblock %}
