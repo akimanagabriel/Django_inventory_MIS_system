@@ -1,0 +1,55 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+
+{% block title %}
+  outgoing
+{% endblock %}
+
+{% block content %}
+  <header class="flex justify-between">
+    <div>
+      <strong>DASHBOARD</strong>
+      <i class="fa fa-caret-right" aria-hidden="true"></i>
+      OUTGOING
+    </div>
+  </header>
+
+  <div class="my-5">
+    {% if not outgoings %}
+      <div class="bg-gray-700 rounded p-2">No outgoing products available</div>
+    {% else %}
+      <div class="bg-slate-900 shadow rounded p-3">
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">#</th>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Date out</th>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product name</th>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product Category</th>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product quantity</th>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Product price</th>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Date in</th>
+              <th class="text-start border border-gray-700 px-2 py-2 uppercase">Expiration date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for outgoing in outgoings %}
+              <tr>
+                <td class="text-start border border-gray-700 px-2">{{ forloop.counter }}</td>
+                <td class="text-start border border-gray-700 px-2">{{ outgoing.outDate }}</td>
+                <td class="text-start border border-gray-700 px-2">
+                  {{ outgoing.product.name }}
+                </td>
+                <td class="text-start border border-gray-700 px-2">{{ outgoing.product.category.title }}</td>
+                <td class="text-start border border-gray-700 px-2">{{ outgoing.quantity }}</td>
+                <td class="text-start border border-gray-700 px-2">{{ outgoing.product.price|intcomma }} RWF</td>
+                <td class="text-start border border-gray-700 px-2">{{ outgoing.product.inDate }}</td>
+                <td class="text-start border border-gray-700 px-2">{{ outgoing.product.expirationDate }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

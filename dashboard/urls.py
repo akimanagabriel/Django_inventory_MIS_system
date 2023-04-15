@@ -2,6 +2,7 @@ from django.urls import path
 from dashboard import views
 from dashboard.controllers import stockController
 from dashboard.controllers import productController
+from dashboard.controllers import outgoingController
 
 urlpatterns = [
     path('', views.home),
@@ -23,4 +24,9 @@ urlpatterns = [
     path('product/<int:id>/update', productController.update, name='product.update'),
     path('product/<int:id>/destroy', productController.destroy, name='product.destroy'),
     path('product/<int:id>/export', productController.export, name='product.export'),
+    
+    #outgoing routes
+    path('outgoing/',outgoingController.index)
+    
+    
 ]
