@@ -16,10 +16,10 @@
         <div id="ddContent" class="absolute top-[35px] w-[100px] right-[0px] bg-slate-900 shadow-xl border border-gray-600 p-3 rounded">
           <ul class="space-y-1">
             <li>
-              <a href="#" class="hover:text-white"><i class="fa fa-cog" aria-hidden="true"></i> setting</a>
+              <a href="{% url 'setting.index' %}" class="hover:text-white"><i class="fa fa-cog" aria-hidden="true"></i> setting</a>
             </li>
             <li>
-              <a href="#" class="hover:text-white"><i class="fa fa-book" aria-hidden="true"></i> History</a>
+              <a href="{% url 'report.index' %}" class="hover:text-white"><i class="fa fa-book" aria-hidden="true"></i> Report</a>
             </li>
             <li>
               <a href="/signout" class="hover:text-white"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>

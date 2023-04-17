@@ -11,24 +11,23 @@ from datetime import datetime
 @login_required
 def index(request):
     products = Incoming.objects.all()
-    
+
     for product in products:
         if product.category.isExpirable:
             current_date = datetime.now()
             expiration_date = product.expirationDate
-            expiration_datetime = datetime.combine(expiration_date, datetime.min.time())
+            expiration_datetime = datetime.combine(
+                expiration_date, datetime.min.time())
             # check if dates are equal then move to expired
             if expiration_datetime < current_date:
-                expired = Expired()
-                expired.quantity = product.quantity
+                expired = Expired(product=product, quantity=product.quantity)
                 product.quantity = 0
-                expired.product = product
                 # validate if already exist in expired
                 if Expired.objects.filter(product=product):
                     continue
                 expired.save()
                 product.save()
-                
+
     # return HttpResponse(currentDate)
     return render(request, 'stock/stockIndex.html', {'products': products})
 

@@ -1,0 +1,68 @@
+{% extends 'report/base.html' %}
+{% load humanize %}
+
+{% block report %}
+  <section>
+    {% if not outgoings %}
+      <div class="bg-gray-700 rounded p-2">No outgoing products available</div>
+    {% else %}
+      <div  id="report" class="bg-slate-900 shadow rounded p-3">
+        <h1 class="text-center mb-2 text-xl font-semibold">Outgoing products report</h1>
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">expiration date</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product name</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product Category</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product quantity</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product price</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">total</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Date in</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for outgoing in outgoings %}
+              {% if not outgoing.quantity == 0 %}
+                <tr>
+                  <td class="text-start border border-gray-700 px-2">{{ outgoing.product.expirationDate }}</td>
+                  <td class="text-start border border-gray-700 px-2">
+                    <span class="capitalize">
+                      {% if 'exported#' in outgoing.product.name %}
+                        {{ outgoing.product.name|slice:'9:' }}
+                      {% else %}
+                        {{ outgoing.product.name }}
+                      {% endif %}
+                    </span>
+                  </td>
+                  <td class="text-start border border-gray-700 px-2">{{ outgoing.product.category.title }}</td>
+                  <td class="text-start border border-gray-700 px-2">{{ outgoing.quantity }}</td>
+                  <td class="text-start border border-gray-700 px-2">{{ outgoing.product.price|intcomma }} RWF</td>
+                  <td class="text-start border border-gray-700 px-2">{{ outgoing.totalPrice|intcomma }} RWF</td>
+                  <td class="text-start border border-gray-700 px-2">{{ outgoing.product.inDate }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="my-5 text-right">
+        <button onclick="printReport()" class="uppercase bg-orange-700 text-gray-300 font-semibold px-3 py-1 rounded">
+          <i class="fa fa-print" aria-hidden="true"></i>
+          Print report
+        </button>
+      </div>
+    {% endif %}
+  </section>
+
+  <script>
+    function printReport() {
+        var element = document.getElementById('report');
+        var printContent = element.innerHTML
+        var originalBody = document.body.innerHTML
+        document.body.innerHTML = printContent
+        window.print()
+        document.body.innerHTML = originalBody
+    }
+  </script>
+{% endblock %}

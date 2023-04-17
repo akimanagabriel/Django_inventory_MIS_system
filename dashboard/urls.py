@@ -4,6 +4,8 @@ from dashboard.controllers import stockController
 from dashboard.controllers import productController
 from dashboard.controllers import outgoingController
 from dashboard.controllers import expiredController
+from dashboard.controllers import reportController
+from dashboard.controllers import settingController
 
 urlpatterns = [
     path('', views.home),
@@ -34,4 +36,14 @@ urlpatterns = [
     path('expired/',expiredController.index, name='expired.index'),
     path('expired/<int:id>',expiredController.destroy , name='expired.destroy'),
         
+    # reports routes
+    path('report/', reportController.index, name='report.index'),
+    path('report/current', reportController.current, name='report.current'),
+    path('report/outgoing', reportController.outgoing, name='report.outgoing'),
+    path('report/expired', reportController.expired, name='report.expired'),
+    
+    # setting routes
+    path('setting/', settingController.index, name='setting.index'),
+    path('setting/updateuser/<int:id>', settingController.updateUser, name='setting.update'),
+    path('setting/changeuserpassword/<int:id>', settingController.changePassword, name='setting.changePassword'),
 ]

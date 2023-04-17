@@ -16,13 +16,25 @@ class Incoming(models.Model):
     inDate = models.DateField(default=date.today)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    def __init__(self, *args, **kwargs):
+        super(Incoming, self).__init__(*args, **kwargs)
+        self.totalPrice = self.price * self.quantity
+
 
 class Outgoing(models.Model):
     product = models.ForeignKey(Incoming, on_delete=models.CASCADE)
     outDate = models.DateField(default=date.today)
-    quantity = models.IntegerField(null=False)
+    quantity = models.IntegerField(default=0)
+   
+    def __init__(self, *args, **kwargs):
+        super(Outgoing, self).__init__(*args, **kwargs)
+        self.totalPrice = self.product.price * self.quantity
 
 
 class Expired(models.Model):
     product = models.ForeignKey(Incoming, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
+    
+    def __init__(self, *args, **kwargs):
+        super(Expired, self).__init__(*args, **kwargs)
+        self.totalPrice = self.product.price * self.quantity

@@ -1,0 +1,116 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+settings
+{% endblock title %}
+
+{% block content %}
+  <header class="flex my-3 justify-between">
+    <div>
+      <strong>DASHBOARD</strong>
+      <i class="fa fa-caret-right" aria-hidden="true"></i>
+      SETTINGS
+    </div>
+  </header>
+
+  <div class="my-2">
+    {% include 'messages.html' %}
+  </div>
+
+  <div class=" justify-center items-center w-100">
+    <div class="bg-slate-900 p-5 rounded shadoe">
+      <h1 class="text-center text-xl">SETTINGS</h1>
+      {% comment %} display info {% endcomment %}
+      <div class="grid grid-cols-12 my-2 gap-5">
+        <div class="col-span-12 md:col-span-6">
+          <h1 class="font-semibold underline mb-3">User details</h1>
+          <table class="w-100">
+            <tr>
+              <td class="px-5 capitalize font-semibold">Firstname:</td>
+              <td class="px-5 capitalize">{{user.first_name}}</td>
+            </tr>
+            <tr>
+              <td class="px-5 capitalize font-semibold">last name:</td>
+              <td class="px-5 capitalize">{{user.last_name}}</td>
+            </tr>
+            <tr>
+              <td class="px-5 capitalize font-semibold">email:</td>
+              <td class="px-5 lowercase">{{user.email}}</td>
+            </tr>
+            <tr>
+              <td class="px-5 capitalize font-semibold">username:</td>
+              <td class="px-5 ">{{user.username}}</td>
+            </tr>
+            <tr>
+              <td class="px-5 capitalize font-semibold">last login:</td>
+              <td class="px-5">{{user.last_login|timesince}} ago</td>
+            </tr>
+            <tr>
+              <td class="px-5 capitalize font-semibold">Date joined:</td>
+              <td class="px-5">{{user.date_joined|timesince}} ago</td>
+            </tr>
+          </table>
+        </div>
+        <div id="editUserDetailsForm" class="col-span-12 md:col-span-6">
+          <form action="{% url 'setting.update' user.id %}" method="post">
+            {% csrf_token %}
+            
+            <div class="flex flex-col my-2">
+              <label for="" class="capitalize">username</label>
+              <input type="text" name="username" value="{{ user.username }}" class="px-3 py-1 rounded bg-slate-800 border border-slate-700">
+            </div>
+
+            <div class="flex flex-col my-2">
+              <label for="" class="capitalize">email</label>
+              <input type="text" name="email" value="{{ user.email }}" class="px-3 py-1 rounded bg-slate-800 border border-slate-700">
+            </div>
+
+            <div class="flex flex-col my-2">
+              <label for="" class="capitalize">first name</label>
+              <input type="text" name="fn" value="{{ user.first_name }}" class="px-3 py-1 rounded bg-slate-800 border border-slate-700">
+            </div>
+
+            <div class="flex flex-col my-2">
+              <label for="" class="capitalize">last name</label>
+              <input type="text" name="ln" value="{{ user.last_name }}" class="px-3 py-1 rounded bg-slate-800 border border-slate-700">
+            </div>
+
+            <div class="flex flex-col mt-3">
+              <button class="py-1 rounded bg-orange-700 hover:bg-orange-800" type="submit">Save changes</button>
+            </div>
+
+          </form>
+        </div>
+
+        <div id="editUserDetailsForm" class="col-span-12 md:col-span-6">
+          
+          <h1>Change password </h1>
+          <form action="{% url 'setting.changePassword' user.id %}" method="post">
+            {% csrf_token %}
+            
+            <div class="flex flex-col my-2">
+              <label for="" class="capitalize">current password</label>
+              <input type="text" name="old" placeholder="provide current" class="px-3 py-1 rounded bg-slate-800 border border-slate-700">
+            </div>
+            
+            <div class="flex flex-col my-2">
+              <label for="" class="capitalize">new password</label>
+              <input type="text" name="new" placeholder="new password" class="px-3 py-1 rounded bg-slate-800 border border-slate-700">
+            </div>
+            
+            <div class="flex flex-col my-2">
+              <label for="" class="capitalize">comfirm password</label>
+              <input type="text" name="comfirm" placeholder="re-type a password" class="px-3 py-1 rounded bg-slate-800 border border-slate-700">
+            </div>
+
+            <div class="flex flex-col mt-3">
+              <button class="py-1 rounded bg-orange-700 hover:bg-orange-800" type="submit">change password</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

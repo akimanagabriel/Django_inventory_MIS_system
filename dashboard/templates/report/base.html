@@ -1,0 +1,37 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+
+{% block title %}
+  outgoing
+{% endblock %}
+
+{% block content %}
+  <header class="flex justify-between">
+    <div>
+      <strong>DASHBOARD</strong>
+      <i class="fa fa-caret-right" aria-hidden="true"></i>
+      REPORT
+    </div>
+    <ul class="flex divide-x divide-gray-700">
+        <li class="uppercase font-semibold hover:text-orange-400 cursor-pointer px-3">
+          <a href="{% url 'report.current' %}">Current stock</a>
+        </li>
+        <li class="uppercase font-semibold hover:text-orange-400 cursor-pointer px-3">
+          <a href="{% url 'report.outgoing' %}">outgoing stock</a></li>
+        <li class="uppercase font-semibold hover:text-orange-400 cursor-pointer pl-3">
+          <a href="{% url 'report.expired' %}">expired stock</a></li>
+    </ul>
+  </header>
+
+  <div class="my-3">
+    {% include 'messages.html' %}
+  </div>
+
+  <div class="my-5">
+    
+    {% block report %}
+        
+    {% endblock report %}
+        
+  </div>
+{% endblock %}
