@@ -1,18 +1,47 @@
 {% extends 'dashboard/base.html' %}
 
-
 {% block title %}
   dashboard
-{% endblock title %}
-  
+{% endblock %}
 
 {% block content %}
+  <div>
+    <div class="bg-slate-900 w-4/12 p-3 rounded shadow">
+      <canvas id="chart"></canvas>
+    </div>
 
-<p class="bg-slate-900 p-5 rounded-xl shadow">
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe laboriosam
-  maiores quis nisi corporis ea doloribus unde cupiditate quod blanditiis
-  debitis laborum, quos, asperiores voluptatum perspiciatis culpa. Blanditiis,
-  ex molestiae?
-</p>
-
-{% endblock content %}
+    <script>
+      const ctx = document.getElementById('chart')
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Incoming', 'Outgoing', 'Expired'],
+          datasets: [
+            {
+              label: 'Records',
+              data: [{{ incoming_count }}, {{ outgoing_count }}, {{ expired_count }}],
+              borderWidth: 1
+            },
+            {
+              label: 'Quantities',
+              data: [{{ incoming_quantity }},{{ outgoing_quantity }},{{ expired_quantity }}],
+              borderWidth: 1
+            },
+            {
+              label: 'Price',
+              data: [{{ incoming_price }},{{ outgoing_price }},{{ expired_price }}],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: false
+            }
+          }
+        }
+      })
+    </script>
+  </div>
+{% endblock %}
