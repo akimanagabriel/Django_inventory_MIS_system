@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from main.models import Incoming, Outgoing, Expired
+from main.models import Category, Incoming, Outgoing, Expired
 from django.db.models import Q,Sum
 
 
@@ -36,7 +36,23 @@ def home(request):
     incoming_qty = Incoming.objects.aggregate(Sum('quantity'))['quantity__sum']
     outgoing_qty = Outgoing.objects.aggregate(Sum('quantity'))['quantity__sum']
     expired_qty = Expired.objects.aggregate(Sum('quantity'))['quantity__sum']
+   
+    #-------------CATEGORIES-------------- # 
+    # registered category data
+    products = Incoming.objects.filter(~Q(quantity=0))
+    categories_list = set()
+    for product in products:
+        categories_list.add(product.category.title)
     
+    # find number of records found in every categories
+    products_count_by_category = []
+    for category_name in categories_list:
+        category = Category.objects.filter(title=category_name)[0]
+        count = Incoming.objects.filter(Q(category=category)& ~Q(quantity=0)).count()
+        products_count_by_category.append(count)
+    
+    # latest products
+    latest_products = Incoming.objects.all().order_by('-id')
     
     context = {
         "incoming_count": incomingCount,
@@ -49,6 +65,10 @@ def home(request):
         
         "incoming_quantity": incoming_qty,
         "outgoing_quantity": outgoing_qty,
-        "expired_quantity":expired_qty
+        "expired_quantity":expired_qty,
+        
+        "categories_list":categories_list,
+        "products_in_category": products_count_by_category,
+        "latest_products":latest_products[:3]
     }
     return render(request, 'dashboard/index.html', context)

@@ -1,36 +1,136 @@
 {% extends 'dashboard/base.html' %}
+{% load humanize %}
 
 {% block title %}
   dashboard
 {% endblock %}
 
 {% block content %}
-  <div>
-    <div class="bg-slate-900 w-4/12 p-3 rounded shadow">
-      <canvas id="chart"></canvas>
+  <div class="pb-5">
+    <div class="grid grid-cols-12 gap-5">
+      <div class="col-span-12 md:col-span-8 grid gap-5">
+        <div class="bg-slate-900 p-2 rounded shadow flex items-end">
+          <canvas id="categorizedChartByInputs"></canvas>
+        </div>
+        <div class="bg-slate-900 p-2 rounded shadow overflow-auto">
+          <p class="text-center text-gray-500 mb-2">Latest stockings</p>
+          <table class="border border-gray-600 w-full">
+            <thead>
+              <tr>
+                <th class="border border-gray-600 text-left px-1">Name</th>
+                <th class="border border-gray-600 text-left px-1">Category</th>
+                <th class="border border-gray-600 text-left px-1">Quantity</th>
+                <th class="border border-gray-600 text-left px-1">Price</th>
+                <th class="border border-gray-600 text-left px-1">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in latest_products %}
+                <tr>
+                  <td class="border border-gray-600 px-1 capitalize">{{ product.name }}</td>
+                  <td class="border border-gray-600 px-1">{{ product.category.title }}</td>
+                  <td class="border border-gray-600 px-1">{{ product.quantity|intcomma }}</td>
+                  <td class="border border-gray-600 px-1">{{ product.price|intcomma }}</td>
+                  <td class="border border-gray-600 px-1">{{ product.totalPrice|intcomma }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-span-12 md:col-span-4 space-y-4">
+        <div class="bg-slate-900 p-2 rounded shadow">
+          <p class="text-center text-gray-500">Categorized summary</p>
+          <div class="w-[200px] md:w-[360px]">
+            <canvas id="categorizedChartByReal"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 p-2 rounded shadow  overflow-auto">
+          <p class="text-center mb-1 text-gray-500">Detailed summary</p>
+          <table class="w-full">
+            <thead>
+              <tr>
+                <td class="border border-gray-600 px-1 text-left">Name</td>
+                <td class="border border-gray-600 px-1 text-left">Incoming</td>
+                <td class="border border-gray-600 px-1 text-left">Outgoing</td>
+                <td class="border border-gray-600 px-1 text-left">Expired</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">Prices</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ incoming_price|intcomma }} F</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ outgoing_price|intcomma }} F</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ expired_price|intcomma }} F</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">Quantities</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ incoming_quantity|intcomma }}</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ outgoing_quantity|intcomma }}</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ expired_quantity|intcomma }}</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">Items</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ incoming_count|intcomma }}</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ outgoing_count|intcomma }}</td>
+                <td class="border border-gray-600 px-1 text-left text-gray-500">{{ expired_count|intcomma }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <script>
-      const ctx = document.getElementById('chart')
-      new Chart(ctx, {
-        type: 'pie',
+      // chart one
+      const chartOne = document.getElementById('categorizedChartByReal')
+      new Chart(chartOne, {
+        type: 'doughnut',
         data: {
           labels: ['Incoming', 'Outgoing', 'Expired'],
           datasets: [
             {
               label: 'Records',
               data: [{{ incoming_count }}, {{ outgoing_count }}, {{ expired_count }}],
-              borderWidth: 1
+              borderWidth: 1,
+              tension: .3,
+              fill:true
             },
             {
               label: 'Quantities',
               data: [{{ incoming_quantity }},{{ outgoing_quantity }},{{ expired_quantity }}],
-              borderWidth: 1
+              borderWidth: 1,
+              tension: .3,
+              fill:true
             },
             {
               label: 'Price',
               data: [{{ incoming_price }},{{ outgoing_price }},{{ expired_price }}],
-              borderWidth: 1
+              borderWidth: 1,
+              tension: .3,
+              fill:true
+            }
+          ]
+        },
+      })
+
+      // chart two
+      const chartTwo = document.getElementById('categorizedChartByInputs')
+      new Chart(chartTwo, {
+        type: 'line',
+        data: {
+          labels: [{% for cat in categories_list %} " {{ cat.title }}", {% endfor %}
+            ],
+          datasets: [
+            {
+              label: 'Records',
+              data: [{% for count in products_in_category %} {{ count }}, {% endfor %}],
+              borderWidth: 1,
+              tension: .3,
+              fill:true,
+              tension: 0.2
             }
           ]
         },
@@ -42,6 +142,7 @@
           }
         }
       })
+
     </script>
   </div>
 {% endblock %}

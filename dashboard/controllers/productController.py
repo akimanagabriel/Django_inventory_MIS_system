@@ -143,3 +143,9 @@ def export(request, id):
 
         messages.success(request, f"{product.name} product exported!")
         return redirect("/dashboard/stock/")
+
+@login_required
+def allByCatId(request,id:int):
+    category = get_object_or_404(Category,id=id)
+    products = Incoming.objects.filter(Q(category=category))
+    return render(request, 'stock/stockIndex.html', {'products': products})

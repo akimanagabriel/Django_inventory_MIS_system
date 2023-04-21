@@ -29,7 +29,9 @@
       {% for category in categories %}
         <div class="bg-slate-900 p-4 rounded-xl">
           <div class="flex justify-between">
-            <h1 class="text-orange-400 font-semibold uppercase">{{ category.title }}</h1>
+            <a href="/dashboard/category/{{ category.id }}/contents">
+              <h1 class="text-orange-400 font-semibold uppercase">{{ category.title }}</h1>
+            </a>
             <i class="fa fa-cubes text-3xl text-gray-700" aria-hidden="true"></i>
           </div>
           {% if category.isExpirable %}
