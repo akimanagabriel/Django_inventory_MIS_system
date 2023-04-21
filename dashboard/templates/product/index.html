@@ -1,4 +1,10 @@
 {% load humanize %}
+
+
+{% if not products %}
+<div class="p-3 bg-gray-700 rounded">No products available</div>
+{% endif %}
+
 <div class="grid grid-cols-12 gap-3">
         
   {% for product in products %}
