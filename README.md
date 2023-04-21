@@ -14,4 +14,4 @@ You can then use this requirements.txt file to recreate the environment on anoth
 
 Note that it's good practice to update your requirements.txt file regularly, especially after adding new dependencies to your project. You can do this by running the pip freeze > requirements.txt command again.
 
--------------------
+----------------------
