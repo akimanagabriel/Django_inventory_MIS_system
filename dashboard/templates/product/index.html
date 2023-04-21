@@ -9,7 +9,7 @@
         
   {% for product in products %}
   
-  {% if product.quantity != 0 %}
+  {% if product.quantity != 0  and product.creator == request.user %}
     
   
   <a href="{% url 'product.show' product.id %}" class="col-span-12 sm:col-span-6 md:col-span-6 lg:col-span-4 xl:col-span-3">

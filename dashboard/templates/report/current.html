@@ -6,26 +6,27 @@
     {% if not current %}
       <div class="bg-gray-700 rounded p-2">No current stock available</div>
     {% else %}
-      <div id="report" class="bg-slate-900 shadow rounded p-3">
+      <div id="report" class="bg-slate-900 shadow rounded p-3 overflow-auto">
         <h1 class="text-center mb-2 text-xl font-semibold">Current stock report</h1>
         <table class="w-full">
           <thead>
             <tr>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">expiration date</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product name</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product Category</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product quantity</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product price</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Total</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Date in</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">expiration date</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">name</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">Category</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">quantity</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">price</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">Total</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">Date in</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">tx owner</th>
             </tr>
           </thead>
           <tbody>
             {% for product in current %}
               {% if not product.quantity == 0 %}
                 <tr>
-                  <td class="text-start border border-gray-700 px-2">{{ product.expirationDate }}</td>
-                  <td class="text-start border border-gray-700 px-2">
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ product.expirationDate }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">
                     <span class="capitalize">
                       {% if 'exported#' in product.name %}
                         {{ product.name|slice:'9:' }}
@@ -34,13 +35,18 @@
                       {% endif %}
                     </span>
                   </td>
-                  <td class="text-start border border-gray-700 px-2">{{ product.category.title }}</td>
-                  <td class="text-start border border-gray-700 px-2">{{ product.quantity }}</td>
-                  <td class="text-start border border-gray-700 px-2">{{ product.price|intcomma }} RWF</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ product.category.title }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ product.quantity }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ product.price|intcomma }} RWF</td>
 
-                  <td class="text-start border border-gray-700 px-2">{{ product.totalPrice|intcomma}} RWF</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ product.totalPrice|intcomma}} RWF</td>
 
-                  <td class="text-start border border-gray-700 px-2">{{ product.inDate }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ product.inDate }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">
+                    <a href="/dashboard/user/{{ product.creator.id }}/view" class="hover:text-orange-400">
+                      <span class="capitalize">{{ product.creator.last_name }}</span>
+                    </a>
+                  </td>
                 </tr>
               {% endif %}
             {% endfor %}

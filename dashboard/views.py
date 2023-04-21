@@ -52,7 +52,7 @@ def home(request):
         products_count_by_category.append(count)
     
     # latest products
-    latest_products = Incoming.objects.all().order_by('-id')
+    latest_products = Incoming.objects.filter(~Q(quantity=0)).order_by('-id')
     
     context = {
         "incoming_count": incomingCount,

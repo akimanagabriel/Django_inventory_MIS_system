@@ -21,9 +21,11 @@
         class="px-4 py-1 rounded bg-slate-700 border border-slate-600"
       >
         {% for category in categories %}
-        <option value="{{ category.id }}" class="capitalize">
-          {{ category.title }}
-        </option>
+          {% if category.creator == request.user %}
+            <option value="{{ category.id }}" class="capitalize">
+              {{ category.title }}
+            </option>
+          {% endif %}
         {% endfor %}
       </select>
       <button

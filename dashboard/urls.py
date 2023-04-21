@@ -6,6 +6,7 @@ from dashboard.controllers import outgoingController
 from dashboard.controllers import expiredController
 from dashboard.controllers import reportController
 from dashboard.controllers import settingController
+from dashboard.controllers import userController
 
 urlpatterns = [
     path('', views.home),
@@ -47,4 +48,7 @@ urlpatterns = [
     path('setting/', settingController.index, name='setting.index'),
     path('setting/updateuser/<int:id>', settingController.updateUser, name='setting.update'),
     path('setting/changeuserpassword/<int:id>', settingController.changePassword, name='setting.changePassword'),
+
+    # users routes
+    path('user/<int:id>/view',userController.index, name='user.index'),
 ]

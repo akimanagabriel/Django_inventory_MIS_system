@@ -64,7 +64,8 @@ def store(request):
         name=productName,
         quantity=productQuantity,
         expirationDate=expirationDate,
-        category=Category.objects.filter(id=categoryId)[0]
+        category=Category.objects.filter(id=categoryId)[0],
+        creator=request.user
     )
     product.save()
     messages.success(request, "Product created")
@@ -144,8 +145,9 @@ def export(request, id):
         messages.success(request, f"{product.name} product exported!")
         return redirect("/dashboard/stock/")
 
+
 @login_required
-def allByCatId(request,id:int):
-    category = get_object_or_404(Category,id=id)
+def allByCatId(request, id: int):
+    category = get_object_or_404(Category, id=id)
     products = Incoming.objects.filter(Q(category=category))
     return render(request, 'stock/stockIndex.html', {'products': products})

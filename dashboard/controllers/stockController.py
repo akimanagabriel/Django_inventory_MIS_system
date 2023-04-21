@@ -34,9 +34,8 @@ def index(request):
 
 @login_required
 def categoriesIndex(request):
-    context = {
-        "categories": Category.objects.all()
-    }
+    categories = Category.objects.all()
+    context = {"categories": categories}
     return render(request, 'category/categoriesIndex.html', context)
 
 
@@ -67,7 +66,7 @@ def createCategory(request):
         return redirect(route)
 
     # insert into db
-    category = Category(title=title, isExpirable=expireble)
+    category = Category(title=title, isExpirable=expireble, creator=request.user)
     category.save()
     messages.success(request, "category created successfully!")
     return redirect('/dashboard/categories/')

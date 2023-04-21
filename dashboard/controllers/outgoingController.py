@@ -11,7 +11,7 @@ from datetime import date
 
 @login_required
 def index(request):
-    outProducts = Outgoing.objects.all()
+    outProducts = Outgoing.objects.all().order_by('-id')
     return render(request, 'outgoing/index.html', {"outgoings": outProducts})
 
 

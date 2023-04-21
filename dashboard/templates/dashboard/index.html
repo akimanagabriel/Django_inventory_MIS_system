@@ -13,7 +13,7 @@
           <canvas id="categorizedChartByInputs"></canvas>
         </div>
         <div class="bg-slate-900 p-2 rounded shadow overflow-auto">
-          <p class="text-center text-gray-500 mb-2">Latest stockings</p>
+          <p class="text-center text-gray-500 mb-2">Newly stockings</p>
           <table class="border border-gray-600 w-full">
             <thead>
               <tr>
@@ -22,6 +22,7 @@
                 <th class="border border-gray-600 text-left px-1">Quantity</th>
                 <th class="border border-gray-600 text-left px-1">Price</th>
                 <th class="border border-gray-600 text-left px-1">Total</th>
+                <th class="border border-gray-600 text-left px-1">TX Owner</th>
               </tr>
             </thead>
             <tbody>
@@ -32,6 +33,11 @@
                   <td class="border border-gray-600 px-1">{{ product.quantity|intcomma }}</td>
                   <td class="border border-gray-600 px-1">{{ product.price|intcomma }}</td>
                   <td class="border border-gray-600 px-1">{{ product.totalPrice|intcomma }}</td>
+                  <td class="border border-gray-600 px-1">
+                    <a href="/dashboard/user/{{ product.creator.id }}/view" class="hover:text-orange-400">
+                      <span class="capitalize">{{ product.creator.last_name }}</span>
+                    </a>
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -92,25 +98,22 @@
           labels: ['Incoming', 'Outgoing', 'Expired'],
           datasets: [
             {
-              label: 'Records',
+              label: 'Items',
               data: [{{ incoming_count }}, {{ outgoing_count }}, {{ expired_count }}],
-              borderWidth: 1,
-              tension: .3,
-              fill:true
+              backgroundColor:['#2a386d','#ab5447','rgb(255,205,86)',],
+              borderWidth: .2
             },
             {
               label: 'Quantities',
               data: [{{ incoming_quantity }},{{ outgoing_quantity }},{{ expired_quantity }}],
-              borderWidth: 1,
-              tension: .3,
-              fill:true
+              backgroundColor:['#2a386d','#ab5447','rgb(255,205,86)',],
+              borderWidth: .2
             },
             {
               label: 'Price',
               data: [{{ incoming_price }},{{ outgoing_price }},{{ expired_price }}],
-              borderWidth: 1,
-              tension: .3,
-              fill:true
+              backgroundColor:['#2a386d','#ab5447','rgb(255,205,86)',],
+              borderWidth: .2
             }
           ]
         },
@@ -127,10 +130,13 @@
             {
               label: 'Records',
               data: [{% for count in products_in_category %} {{ count }}, {% endfor %}],
-              borderWidth: 1,
+              borderWidth: .7,
               tension: .3,
               fill:true,
-              tension: 0.2
+              borderColor:'rgb(243,174,68,.8)',
+              backgroundColor:'rgb(243,174,68,.075)',
+              pointBackgroundColor:'rgb(243,174,68,.5)',
+              tension: 0.4
             }
           ]
         },

@@ -1,0 +1,46 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+  user details
+{% endblock %}
+
+{% block content %}
+  <header class="flex justify-between">
+    <div>
+      <strong>DASHBOARD</strong>
+      <i class="fa fa-caret-right" aria-hidden="true"></i>
+      USER DETAILS
+    </div>
+  </header>
+
+  <div class="my-3">
+    {% include 'messages.html' %}
+  </div>
+
+  <div class="my-5">
+    <div class="bg-slate-900 rounded p-5">
+        <h1 class="underline">User details</h1>
+        <div class="overflow-auto">
+            <table class="w-full mt-5">
+                <tr>
+                    <td class="font-semibold capitalize">Username</td>
+                    <td>{{user}}</td>
+                </tr>
+                <tr>
+                    <td class="font-semibold capitalize">Email</td>
+                    <td>{{user.email}}</td>
+                </tr>
+                <tr>
+                    <td class="font-semibold capitalize">Firstname</td>
+                    <td>{{user.first_name}}</td>
+                </tr>
+                <tr>
+                    <td class="font-semibold capitalize">Lastname</td>
+                    <td>{{user.last_name}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

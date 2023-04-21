@@ -82,7 +82,7 @@ settings
           </form>
         </div>
 
-        <div id="editUserDetailsForm" class="col-span-12 md:col-span-6">
+        {% comment %} <div id="editUserDetailsForm" class="col-span-12 md:col-span-6">
           
           <h1>Change password </h1>
           <form action="{% url 'setting.changePassword' user.id %}" method="post">
@@ -108,7 +108,7 @@ settings
             </div>
 
           </form>
-        </div>
+        </div> {% endcomment %}
 
       </div>
     </div>

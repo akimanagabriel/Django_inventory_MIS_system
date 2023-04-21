@@ -6,26 +6,27 @@
     {% if not expirables %}
       <div class="bg-gray-700 rounded p-2">No expired products available</div>
     {% else %}
-      <div id="report" class="bg-slate-900 shadow rounded p-3">
+      <div id="report" class="bg-slate-900 shadow rounded p-3 overflow-auto">
         <h1 class="text-center mb-2 text-xl font-semibold">Expired product report</h1>
         <table class="w-full">
           <thead>
             <tr>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">expiration date</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product name</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product Category</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product quantity</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Product price</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">total</th>
-              <th class="text-start border border-gray-700 px-2 py-1 uppercase">Date in</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">expiration date</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">name</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">Category</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">quantity</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">price</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">total</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">Date in</th>
+              <th class="text-start border border-gray-700 px-2 py-1 uppercase whitespace-nowrap">tx owner</th>
             </tr>
           </thead>
           <tbody>
             {% for expired in expirables %}
               {% if not expired.quantity == 0 %}
                 <tr>
-                  <td class="text-start border border-gray-700 px-2">{{ expired.product.expirationDate }}</td>
-                  <td class="text-start border border-gray-700 px-2">
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ expired.product.expirationDate }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">
                     <span class="capitalize">
                       {% if 'exported#' in expired.product.name %}
                         {{ expired.product.name|slice:'9:' }}
@@ -34,11 +35,14 @@
                       {% endif %}
                     </span>
                   </td>
-                  <td class="text-start border border-gray-700 px-2">{{ expired.product.category.title }}</td>
-                  <td class="text-start border border-gray-700 px-2">{{ expired.quantity }}</td>
-                  <td class="text-start border border-gray-700 px-2">{{ expired.product.price|intcomma }} RWF</td>
-                  <td class="text-start border border-gray-700 px-2">{{ expired.totalPrice|intcomma }} RWF</td>
-                  <td class="text-start border border-gray-700 px-2">{{ expired.product.inDate }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ expired.product.category.title }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ expired.quantity }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ expired.product.price|intcomma }} RWF</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ expired.totalPrice|intcomma }} RWF</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">{{ expired.product.inDate }}</td>
+                  <td class="text-start border border-gray-700 px-2 whitespace-nowrap">
+                    <a href="/dashboard/user/{{ expired.product.creator.id }}/view" class="hover:text-orange-400"><span class="capitalize">{{ expired.product.creator.last_name }}</span></a>
+                  </td>
                 </tr>
               {% endif %}
             {% endfor %}
@@ -64,7 +68,5 @@
       window.print()
       document.body.innerHTML = originalBody
     }
-    
-   
   </script>
 {% endblock %}
