@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     title = models.CharField(max_length=50)
     isExpirable = models.BooleanField(default=False)
-    creator = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
+    creator = models.ForeignKey(User,on_delete=models.CASCADE)
 
 class Incoming(models.Model):
     price = models.IntegerField(null=False)
@@ -15,7 +15,7 @@ class Incoming(models.Model):
     quantity = models.IntegerField(null=False)
     expirationDate = models.DateField(null=True)
     inDate = models.DateField(default=date.today)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE, null=True)
     creator = models.ForeignKey(User,on_delete=models.CASCADE, null=True)
 
     def __init__(self, *args, **kwargs):

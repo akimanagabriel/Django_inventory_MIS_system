@@ -113,6 +113,10 @@ def createProduct(request):
 
 @login_required
 def checkExpirableCategory(request):
+    if request.GET.get('category') == None:
+        messages.error(request , "You must register category first")
+        return redirect('/dashboard/stock/create/')
+    
     id = int(request.GET.get('category'))
     category = Category.objects.filter(id=id)[0]
     categories = Category.objects.all().order_by('title')

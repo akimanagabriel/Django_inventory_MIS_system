@@ -5,7 +5,13 @@
         <a href="/dashboard/" class="font-bold text-xl">STOCK<span class="text-orange-400">WISE</span></a>
       </div>
       <div class="w-1/3 hidden md:block">
-        <input type="text" placeholder="Search here..." class="py-1 px-5 rounded-full w-100 border border-gray-600 bg-gray-700" />
+        <form action="{% url 'search' %}" method="get" class="relative w-100">
+          <input name="search" type="text" placeholder="Search here..." class="py-1 px-5 rounded-full w-full border border-slate-600 pr-12 bg-slate-700" />
+          {% csrf_token %}
+          <button class="absolute right-4 top-1 hover:text-red-100">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </button>
+        </form>
       </div>
       <div id="ddContainer" class="flex items-center relative">
         <h1 id="ddToggler" class="uppercase text-white font-semibold cursor-pointer flex items-center gap-2">

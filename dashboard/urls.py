@@ -7,6 +7,7 @@ from dashboard.controllers import expiredController
 from dashboard.controllers import reportController
 from dashboard.controllers import settingController
 from dashboard.controllers import userController
+from dashboard.controllers import searchController
 
 urlpatterns = [
     path('', views.home),
@@ -51,4 +52,8 @@ urlpatterns = [
 
     # users routes
     path('user/<int:id>/view',userController.index, name='user.index'),
+    
+    # search 
+    
+    path('search', searchController.search, name='search')
 ]
