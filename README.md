@@ -1,4 +1,9 @@
 # group_one_Inventory_MIS
+
+<img src='screen.PNG'>
+
+# Instructions
+
 To generate a dependencies file in a Django project, you can use the pip freeze command, which generates a list of all installed packages and their versions. Here are the steps to generate a dependencies file:
 
 Activate your virtual environment (if you're using one) by running the command source path/to/venv/bin/activate.
