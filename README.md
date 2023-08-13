@@ -1,4 +1,4 @@
-# group_one_Inventory_MIS
+# Inventory MIS using Django framework
 
 <img src='screen.PNG'>
 
